@@ -1,0 +1,9 @@
+{
+  "ProjectName": "default_project_name",
+  "PythonVersion": "3.13.0",
+  "Modules": [
+    "git+https://github.com/Mythical-Github/cli_py.git",
+    "git+https://github.com/Mythical-Github/log_py.git",
+    "pathlib"
+  ]
+}
