@@ -56,18 +56,45 @@ if defined Module[%j%] (
 )
 
 
+:: Create project base directory
 set "project_dir=%~dp0%ProjectName%"
+
+if exist "%project_dir%" (
+    rmdir /s /q "%project_dir%"
+)
+
 
 if not exist "%project_dir%" (
     mkdir "%project_dir%"
 )
 
-set "src_py=%~dp0template_assets\__main__.py"
-set "dst_py_dir=%project_dir%\src\%ProjectName%"
-set "dst_py=%dst_py_dir%\__main__.py"
 
-mkdir "%dst_py_dir%"
-copy "%src_py%" "%dst_py%"
+:: Copy base source files into the new project
+set "src_src_files_dir=%~dp0template_assets\src"
+set "dst_py_dir=%project_dir%\src\%ProjectName%"
+
+robocopy "%src_src_files_dir%" "%dst_py_dir%" /MIR > NUL
+
+
+:: Copy the build scripts over into the new project
+set "src_build_scripts_dir=%~dp0template_assets\build_scripts"
+set "dst_build_scripts_dir=%project_dir%\build_scripts"
+
+robocopy "%src_build_scripts_dir%" "%dst_build_scripts_dir%" /MIR > NUL
+
+
+:: Copy the ProjectInfo.json over into the new project
+set "src_src_files_dir=%~dp0template_assets\src"
+set "dst_py_dir=%project_dir%\src\%ProjectName%"
+
+xcopy "%src_src_files_dir%" "%dst_py_dir%" /E /I /Y > NUL
+
+
+:: Copy the images folder over into the new project
+set "src_images_dir=%~dp0template_assets\images"
+set "dst_images_dir=%project_dir%\images"
+
+robocopy "%src_images_dir%" "%dst_images_dir%" /MIR > NUL
 
 
 endlocal
