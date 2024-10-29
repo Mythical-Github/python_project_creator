@@ -1,9 +1,0 @@
-{
-    "module_name": "main",
-    "commands": {
-        "main_entry": {
-            "function_name": "main_entry",
-            "arg_help_pairs": []
-        }
-    }
-}
