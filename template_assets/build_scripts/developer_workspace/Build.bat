@@ -15,37 +15,13 @@ base_path = Path(src_dir)
 files_to_include = [
     base_path / "json/cli.json",
     base_path / "json/log_colors.json",
-    base_path / "__init__.py",
-    base_path / "engine.py",
-    base_path / "enums.py",
-    base_path / "game_runner.py",
-    base_path / "mods.py",
-    base_path / "packing.py",
-    base_path / "repak_utilities.py",
-    base_path / "script_states.py",
-    base_path / "settings.py",
-    base_path / "thread_constant.py",
-    base_path / "thread_engine_monitor.py",
-    base_path / "thread_game_monitor.py",
-    base_path / "unreal_pak.py",
     base_path / "utilities.py"
-]
 
 pyinstaller_cmd = [
     'pyinstaller',
     '--collect-data grapheme',
     '--collect-submodules "psutil"',
     '--collect-submodules "win_man_py"',
-    '--collect-submodules "ue_dev_py_utils"',
-    '--collect-submodules "alive_progress"',
-    '--collect-submodules "requests"',
-    '--collect-submodules "log_py"',
-    '--collect-submodules "gen_py_utils"',
-    '--collect-submodules "cli_py"',
-    '--collect-submodules "pyjson5"',
-    '--noconfirm',
-    '--onefile',
-    '--console',
     f"--icon={base_path.parent.parent / 'assets/images/UnrealAutoModIcon.ico'}"
 ]
 

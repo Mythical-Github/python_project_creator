@@ -3,7 +3,23 @@
   "PythonVersion": "3.13.0",
   "CreateGithubRepo": false,
   "RepoCreationKey": "",
-  "Modules": [
+  "CollectSubModules": [
+    "git+https://github.com/Mythical-Github/cli_py.git",
+    "git+https://github.com/Mythical-Github/log_py.git",
+    "pathlib",
+    "pyinstaller"
+  ],
+  "CollectData": [
+    "git+https://github.com/Mythical-Github/cli_py.git",
+    "git+https://github.com/Mythical-Github/log_py.git",
+    "pathlib"
+  ],
+  "AddData": [
+    "git+https://github.com/Mythical-Github/cli_py.git",
+    "git+https://github.com/Mythical-Github/log_py.git",
+    "pathlib"
+  ],
+  "AdditionalArgs": [
     "git+https://github.com/Mythical-Github/cli_py.git",
     "git+https://github.com/Mythical-Github/log_py.git",
     "pathlib"
