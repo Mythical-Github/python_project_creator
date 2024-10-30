@@ -1,42 +1,40 @@
-echo test 2
-import sys
-import os
-from pathlib import Path
 
-if getattr(sys, 'frozen', False):
-    SCRIPT_DIR = os.path.dirname(os.path.abspath(sys.executable))
-else:
-    SCRIPT_DIR = os.path.dirname(os.path.realpath(__file__))
-os.chdir(SCRIPT_DIR)
+cd %~dp0
 
-src_dir = f'{os.path.dirname(os.path.dirname(SCRIPT_DIR))}/src/unreal_auto_mod'
+set "SCRIPT_DIR=%CD%"
 
-base_path = Path(src_dir)
-files_to_include = [
-    base_path / "json/cli.json",
-    base_path / "json/log_colors.json",
-    base_path / "utilities.py"
+set "ProjectName=default_name"
 
-pyinstaller_cmd = [
-    'pyinstaller',
-    '--collect-data grapheme',
-    '--collect-submodules "psutil"',
-    '--collect-submodules "win_man_py"',
-    '--noconfirm',
-    '--onefile',
-    '--console',
-    f"--icon={base_path.parent.parent / 'assets/images/UnrealAutoModIcon.ico'}"
-]
+set "SRC_DIR=%CD%\..\..\src\%ProjectName%"
 
-for file_path in files_to_include:
-    pyinstaller_cmd.append(f"--add-data={file_path};.")
+@REM src_dir = f'{os.path.dirname(os.path.dirname(SCRIPT_DIR))}/src/unreal_auto_mod'
 
-command_string = " ".join(pyinstaller_cmd)
+@REM base_path = Path(src_dir)
+@REM files_to_include = [
+@REM     base_path / "json/cli.json",
+@REM     base_path / "json/log_colors.json",
+@REM     base_path / "utilities.py"
 
-command = str(f'{src_dir}/__main__.py')
+@REM pyinstaller_cmd = [
+@REM     'pyinstaller',
+@REM     '--collect-data grapheme',
+@REM     '--collect-submodules "psutil"',
+@REM     '--collect-submodules "win_man_py"',
+@REM     '--noconfirm',
+@REM     '--onefile',
+@REM     '--console',
+@REM     f"--icon={base_path.parent.parent / 'assets/images/UnrealAutoModIcon.ico'}"
+@REM ]
 
-command_string = f'{command_string} "{command}"'
+@REM for file_path in files_to_include:
+@REM     pyinstaller_cmd.append(f"--add-data={file_path};.")
 
-print(command_string)
+@REM command_string = " ".join(pyinstaller_cmd)
 
-os.system(command_string)
+@REM command = str(f'{src_dir}/__main__.py')
+
+@REM command_string = f'{command_string} "{command}"'
+
+@REM print(command_string)
+
+@REM os.system(command_string)
