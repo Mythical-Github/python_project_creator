@@ -6,8 +6,7 @@
   "CollectSubModules": [
     "git+https://github.com/Mythical-Github/cli_py.git",
     "git+https://github.com/Mythical-Github/log_py.git",
-    "pathlib",
-    "pyinstaller"
+    "pathlib"
   ],
   "CollectData": [
     "git+https://github.com/Mythical-Github/cli_py.git",
@@ -20,8 +19,8 @@
     "pathlib"
   ],
   "AdditionalArgs": [
-    "git+https://github.com/Mythical-Github/cli_py.git",
-    "git+https://github.com/Mythical-Github/log_py.git",
-    "pathlib"
+    "--noconfirm",
+    "--onefile",
+    "--console"
   ]
 }

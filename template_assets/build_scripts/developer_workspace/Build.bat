@@ -22,6 +22,9 @@ pyinstaller_cmd = [
     '--collect-data grapheme',
     '--collect-submodules "psutil"',
     '--collect-submodules "win_man_py"',
+    '--noconfirm',
+    '--onefile',
+    '--console',
     f"--icon={base_path.parent.parent / 'assets/images/UnrealAutoModIcon.ico'}"
 ]
 
