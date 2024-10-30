@@ -1,3 +1,4 @@
+echo test 2
 import sys
 import os
 from pathlib import Path
