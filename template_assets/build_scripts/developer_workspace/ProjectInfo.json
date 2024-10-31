@@ -1,18 +1,30 @@
 {
-  "ProjectName": "default_project_name",
+  "ProjectName": "unreal_auto_mod",
   "PythonVersion": "3.13.0",
   "CreateGithubRepo": false,
   "RepoCreationKey": "",
   "RepoURL": "https://github.com/Mythical-Github/UnrealAutoMod",
+  "RepoBranch": "dev",
+  "Modules": [
+    "git+https://github.com/Mythical-Github/ue_dev_py_utils.git",
+    "git+https://github.com/Mythical-Github/log_py.git",
+    "git+https://github.com/Mythical-Github/cli_py.git",
+    "git+https://github.com/Mythical-Github/ue_dev_py_utils.git",
+    "git+https://github.com/Mythical-Github/win_man_py.git",
+    "pyjson5",
+    "alive_progress",
+    "requests"
+  ],
+  "AdditionalUV_VenvCreationOptions": [
+    "--relocatable"
+  ],  
   "CollectSubModules": [
     "git+https://github.com/Mythical-Github/cli_py.git",
     "git+https://github.com/Mythical-Github/log_py.git",
     "pathlib"
   ],
   "CollectData": [
-    "git+https://github.com/Mythical-Github/cli_py.git",
-    "git+https://github.com/Mythical-Github/log_py.git",
-    "pathlib"
+    "grapheme"
   ],
   "AddData": [
     "git+https://github.com/Mythical-Github/cli_py.git",

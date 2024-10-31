@@ -1,40 +1,66 @@
+@echo off
+setlocal EnableDelayedExpansion
 
 cd %~dp0
 
 set "SCRIPT_DIR=%CD%"
 
-set "ProjectName=default_name"
+set "json_file=%~dp0ProjectInfo.json"
+
+:: Check if JSON file exists
+if not exist "%json_file%" (
+    echo ProjectInfo.json file not found. Please ensure data.json is in the same directory.
+    exit /b 1
+)
+
+call InstallJQ.bat
+
+set "jq_path=%~dp0jq.exe"
+
+:: Parse JSON using jq and set variables
+for /f "delims=" %%A in ('%jq_path% -r ".ProjectName" "%json_file%"') do set "ProjectName=%%A"
 
 set "SRC_DIR=%CD%\..\..\src\%ProjectName%"
 
-@REM src_dir = f'{os.path.dirname(os.path.dirname(SCRIPT_DIR))}/src/unreal_auto_mod'
 
-@REM base_path = Path(src_dir)
-@REM files_to_include = [
-@REM     base_path / "json/cli.json",
-@REM     base_path / "json/log_colors.json",
-@REM     base_path / "utilities.py"
+:: Parse Modules array and store each module in a variable
+set i=0
+set "PyInstallerCMD=pyinstaller"
 
-@REM pyinstaller_cmd = [
-@REM     'pyinstaller',
-@REM     '--collect-data grapheme',
-@REM     '--collect-submodules "psutil"',
-@REM     '--collect-submodules "win_man_py"',
-@REM     '--noconfirm',
-@REM     '--onefile',
-@REM     '--console',
-@REM     f"--icon={base_path.parent.parent / 'assets/images/UnrealAutoModIcon.ico'}"
-@REM ]
+for /f "delims=" %%A in ('%jq_path% -r ".AddData[]" "%json_file%"') do (
+    set /a i+=1
+    set "PyInstallerCMD=!PyInstallerCMD! --add-data=%%A;."
+)
 
-@REM for file_path in files_to_include:
-@REM     pyinstaller_cmd.append(f"--add-data={file_path};.")
+set i=0
 
-@REM command_string = " ".join(pyinstaller_cmd)
+for /f "delims=" %%A in ('%jq_path% -r ".CollectData[]" "%json_file%"') do (
+    set /a i+=1
+    set "PyInstallerCMD=!PyInstallerCMD! --collect-data=%%A;."
+)
 
-@REM command = str(f'{src_dir}/__main__.py')
+set i=0
 
-@REM command_string = f'{command_string} "{command}"'
+for /f "delims=" %%A in ('%jq_path% -r ".CollectSubModules[]" "%json_file%"') do (
+    set /a i+=1
+    set "PyInstallerCMD=!PyInstallerCMD! --collect-submodules=%%A;."
+)
 
-@REM print(command_string)
+echo !PyInstallerCMD!
 
-@REM os.system(command_string)
+set i=0
+
+for /f "delims=" %%A in ('%jq_path% -r ".AdditionalArgs" "%json_file%"') do (
+    set /a i+=1
+    set "PyInstallerCMD=!PyInstallerCMD! %%A"
+)
+
+set "IconArg=%SCRIPT_DIR%\%ProjectName%\images\icons\project_main_icon.ico"
+
+set "PyInstallerCMD=!PyInstallerCMD! %IconArg%"
+
+echo !PyInstallerCMD!
+
+pause
+
+endlocal

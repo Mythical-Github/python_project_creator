@@ -1,27 +1,40 @@
 @echo off
 
-set "project_name=kf1_mods_installer"
+cd /d %~dp0
 
-:: Change to the directory where the script is located
-cd /d "%~dp0"
+set "SCRIPT_DIR=%CD%"
 
-:: Define the base directory
-set "base_dir=%~dp0%project_name%"
+set "json_file=%~dp0ProjectInfo.json"
 
-:: Install uv if not already installed
-pip install uv
+:: Check if JSON file exists
+if not exist "%json_file%" (
+    echo ProjectInfo.json file not found. Please ensure data.json is in the same directory.
+    exit /b 1
+)
+
+call InstallJQ.bat
+
+set "jq_path=%~dp0jq.exe"
+
+:: Parse JSON using jq and set variables
+for /f "delims=" %%A in ('%jq_path% -r ".ProjectName" "%json_file%"') do set "ProjectName=%%A"
+for /f "delims=" %%A in ('%jq_path% -r ".PythonVersion" "%json_file%"') do set "PythonVersion=%%A"
+for /f "delims=" %%A in ('%jq_path% -r ".RepoURL" "%json_file%"') do set "RepoURL=%%A"
+for /f "delims=" %%A in ('%jq_path% -r ".RepoBranch" "%json_file%"') do set "RepoBranch=%%A"
+
+set "base_dir=%~dp0%ProjectName%"
+
+call InstallPython.bat
+call InstallUV.bat
 
 :: Remove the existing directory if it exists
 if not exist "%base_dir%" (
-    git clone -b dev https://github.com/Mythical-Github/%project_name%.git "%base_dir%"
+    git clone -b %RepoBranch% %RepoURL%.git "%base_dir%"
 )
 
 :: Change to the base directory
 cd "%base_dir%"
 
-:: Set the run application command
-set command=uv run "%base_dir%/src/%project_name%/__main__.py"
-
 :: Create and activate the virtual environment, then install requirements, then run the application, then pause
-uv venv --python 3.13.0
+uv venv --python %PythonVersion%
 .venv\Scripts\activate && uv pip install -r requirements.txt && %command%

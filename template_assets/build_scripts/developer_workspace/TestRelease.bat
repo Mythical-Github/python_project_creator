@@ -1,20 +1,22 @@
-import os
-import sys
+@echo off
+setlocal
 
-if getattr(sys, 'frozen', False):
-    SCRIPT_DIR = os.path.dirname(os.path.abspath(sys.executable))
-else:
-    SCRIPT_DIR = os.path.dirname(os.path.realpath(__file__))
-os.chdir(SCRIPT_DIR)
+:: Determine the script directory
+set "SCRIPT_DIR=%~dp0"
 
-assets_dir = os.path.dirname(SCRIPT_DIR)
-run_bat_file = f'{assets_dir}/base/run_default.bat'
-if os.path.isfile(run_bat_file):
-    os.system('cls')
-    os.system(run_bat_file)
+:: Define the assets directory
+set "ASSETS_DIR=%SCRIPT_DIR%.."
 
-sys.exit()
+:: Define the path for the run_default.bat file
+set "RUN_BAT_FILE=%ASSETS_DIR%\base\run_default.bat"
 
-# help_bat_file = f'{assets_dir}/base/help.bat'
-# if os.path.isfile(help_bat_file):
-#     os.system(help_bat_file)
+:: Check if the run_default.bat file exists
+if exist "%RUN_BAT_FILE%" (
+    cls
+    call "%RUN_BAT_FILE%"
+) else (
+    echo run_default.bat file not found.
+)
+
+endlocal
+exit /b
