@@ -17,49 +17,48 @@ call InstallJQ.bat
 
 set "jq_path=%~dp0jq.exe"
 
-:: Parse JSON using jq and set variables
 for /f "delims=" %%A in ('%jq_path% -r ".ProjectName" "%json_file%"') do set "ProjectName=%%A"
 
-set "SRC_DIR=%CD%\..\..\src\%ProjectName%"
-
-
-:: Parse Modules array and store each module in a variable
-set i=0
 set "PyInstallerCMD=pyinstaller"
 
-for /f "delims=" %%A in ('%jq_path% -r ".AddData[]" "%json_file%"') do (
-    set /a i+=1
-    set "PyInstallerCMD=!PyInstallerCMD! --add-data=%%A;."
-)
 
 set i=0
-
 for /f "delims=" %%A in ('%jq_path% -r ".CollectData[]" "%json_file%"') do (
     set /a i+=1
-    set "PyInstallerCMD=!PyInstallerCMD! --collect-data=%%A;."
+    set "PyInstallerCMD=!PyInstallerCMD! --collect-data=%%A"
 )
 
-set i=0
 
+set i=0
 for /f "delims=" %%A in ('%jq_path% -r ".CollectSubModules[]" "%json_file%"') do (
     set /a i+=1
-    set "PyInstallerCMD=!PyInstallerCMD! --collect-submodules=%%A;."
+    set "PyInstallerCMD=!PyInstallerCMD! --collect-submodules "%%A""
 )
 
-echo !PyInstallerCMD!
 
 set i=0
-
-for /f "delims=" %%A in ('%jq_path% -r ".AdditionalArgs" "%json_file%"') do (
+for /f "delims=" %%A in ('%jq_path% -r ".AdditionalArgs[]" "%json_file%"') do (
     set /a i+=1
     set "PyInstallerCMD=!PyInstallerCMD! %%A"
 )
 
-set "IconArg=%SCRIPT_DIR%\%ProjectName%\images\icons\project_main_icon.ico"
 
+set "IconArg=--icon="%SCRIPT_DIR%\%ProjectName%\assets\images\icons\project_main_icon.ico""
 set "PyInstallerCMD=!PyInstallerCMD! %IconArg%"
 
+
+set i=0
+for /f "delims=" %%A in ('%jq_path% -r ".AddData[]" "%json_file%"') do (
+    set /a i+=1
+    set "PyInstallerCMD=!PyInstallerCMD!--add-data=%%A;."
+)
+
+set "main_py=%SCRIPT_DIR%\%ProjectName%\src\%ProjectName%\__main__.py"
+set "PyInstallerCMD=!PyInstallerCMD! "!main_py!""
+
+
 echo !PyInstallerCMD!
+!PyInstallerCMD!
 
 pause
 

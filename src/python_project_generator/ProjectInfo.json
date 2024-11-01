@@ -5,6 +5,9 @@
   "RepoCreationKey": "",
   "RepoURL": "https://github.com/Mythical-Github/UnrealAutoMod",
   "RepoBranch": "dev",
+  "AdditionalUV_VenvCreationOptions": [
+    "--relocatable"
+  ],
   "Modules": [
     "git+https://github.com/Mythical-Github/ue_dev_py_utils.git",
     "git+https://github.com/Mythical-Github/log_py.git",
@@ -15,9 +18,6 @@
     "alive_progress",
     "requests"
   ],
-  "AdditionalUV_VenvCreationOptions": [
-    "--relocatable"
-  ],  
   "CollectSubModules": [
     "git+https://github.com/Mythical-Github/cli_py.git",
     "git+https://github.com/Mythical-Github/log_py.git",
