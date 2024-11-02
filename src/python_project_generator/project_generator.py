@@ -12,19 +12,12 @@ else:
 
 
 def get_project_info_json():
-    project_info_json = Path(f'{SCRIPT_DIR}/project_info.json')
+    project_info_json = Path(f'{SCRIPT_DIR}/python_project_generator.json')
     if not project_info_json.is_file():
         raise FileNotFoundError(f"project_info.json file not found: {project_info_json}")
     else:
         with open(project_info_json, 'r') as f:
             return pyjson5.load(f)
-
-
-def get_python_version():
-    python_version = get_project_info_json().get('python_version')
-    if not python_version:
-        raise ValueError("Missing 'python_version' in project info JSON.")
-    return python_version
 
 
 def get_project_name():
