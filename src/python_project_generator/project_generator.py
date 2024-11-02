@@ -55,8 +55,12 @@ def copy_template_src_files_into_new_project():
 
 def copy_template_build_scripts_into_new_project():
     src_build_scripts_dir = Path(f'{SCRIPT_DIR}/template_assets/build_scripts')
+    if not src_build_scripts_dir.is_dir():
+        raise NotADirectoryError(f'src_builds_dir dir is not found: {src_build_scripts_dir}')
     dst_build_scripts_dir = Path(f'{get_project_dir()}/build_scripts')
     shutil.copytree(src_build_scripts_dir, dst_build_scripts_dir)
+    if not dst_build_scripts_dir.is_dir():
+        raise NotADirectoryError(f'dst_build_scripts_dir dir is not found: {dst_build_scripts_dir}')
 
 
 def copy_project_info_json_into_new_project():
