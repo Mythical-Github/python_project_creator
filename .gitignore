@@ -160,3 +160,4 @@ cython_debug/
 #.idea/
 jq.exe
 /default_project_name
+/src/python_project_generator/unreal_auto_mod
